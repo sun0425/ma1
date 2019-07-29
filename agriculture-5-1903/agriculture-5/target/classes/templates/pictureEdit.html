@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html>
+
+
+
+
+
+<script type="text/javascript">
+    $(function () {
+        $("#submit").click(function () {
+            var formData=new FormData(document.getElementById("fr"));
+            $.ajax({
+                type:"post",
+                url:"loginAll",
+                data:formData,
+                processData:false, //processData设置为false。因为data值是FormData对象，不需要对数据做处理。
+                contentType:false, // contentType设置为false。因为是由<form>表单构造的FormData对象，且已经声明了属性enctype="multipart/form-data"，所以这里设置为false。
+                cache: false,  //cache设置为false，上传文件不需要缓存。
+                success:function (data) {
+                    if(parseInt(data)==1){
+                        location.href="index.view";
+                    }else {
+                        location.href ="error.view";
+                    }
+                }
+                /*clearForm: true,//禁止清楚表单
+                 resetForm: true //禁止重置表单*/
+            });
+        });
+
+//        $("#btn_import").click(function(){
+//            //避免重复点击,上传多次文件
+//            $("button").attr("disabled","disabled");
+//            var formData=new FormData();
+//            formData.append("articleFile",$("#articleFile")[0].files[0]);
+//            $.ajax({
+//                url:'${ctx}/executeImport',
+//                type:'post',
+//                data:formData,
+//                contentType:false,
+//                processData:false,
+//                cache:false,
+//                success:function(data){
+//                    window.location.href='${ctx}/importArticle';
+//                }
+//            });
+//        });
+
+
+    });
+
+</script>
+<div class="container-fluid">
+    <div style="height: 40px;"></div>
+    <div class="row">
+        <div class="col-md-5 col-md-offset-4">
+            <form class="form-horizontal" enctype="multipart/form-data" id="fr" method="post" >
+                <div class="form-group">
+                    <label for="userName" class="col-sm-2 control-label">用户名：</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="userName" name="name" placeholder="用户名">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="userPass" class="col-sm-2 control-label">密码：</label>
+                    <div class="col-sm-8">
+                        <input type="password" class="form-control" id="userPass" name="pass" placeholder="密码">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-9">
+                        <label for="uploadFile">文件上传</label>
+                        <input type="file" id="uploadFile" name="uploadFile">
+                        <span>
+                            <!--<button type="submit"class="btn btn-primary btn-sm">提交</button>-->
+                            <button type="reset" class="btn btn-info btn-sm">取消</button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-9">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox">记住我
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-9">
+                        <button id="submit" type="button" class="btn btn-success active">登录</button>
+                        <button type="reset" class="btn btn-info active">取消</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

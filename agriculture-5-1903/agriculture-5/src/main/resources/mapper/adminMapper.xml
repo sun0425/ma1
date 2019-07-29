@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.dao.AdminDao">
+    <!--登录-->
+    <select id="loginByUserNameAndPassword" parameterType="com.qf.domain.Admin" resultType="com.qf.domain.Admin">
+        select * from admin where userName=#{userName} and password=#{password}
+    </select>
+
+    <!--修改之前先查询-->
+    <select id="loadById" parameterType="int" resultType="com.qf.domain.Admin">
+        SELECT * FROM admin where id=#{id}
+    </select>
+
+    <update id="update" parameterType="com.qf.domain.Admin">
+
+        update  admin
+        <set>
+            <trim suffixOverrides=",">
+                <if test="userName!=null">
+                    userName=#{userName},
+                </if>
+                <if test="password!=null">
+                    password=#{password},
+                </if>
+                <if test="turnover!=null">
+                    turnover=#{turnover},
+                </if>
+
+            </trim>
+        </set>
+        <where>
+            id=#{id}
+        </where>
+    </update>
+</mapper>

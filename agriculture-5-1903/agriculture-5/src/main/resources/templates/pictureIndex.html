@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../static/css/main.css">
+    <style>
+        .tree li {
+            list-style-type: none;
+            cursor: pointer;
+        }
+
+        table tbody tr:nth-child(odd) {
+            background: #F4F4F4;
+        }
+
+        table tbody td:nth-child(even) {
+            color: #C00;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <div><a class="navbar-brand" style="font-size:32px;" href="">美好生活从盒马开始</a></div>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li style="padding-top:8px;">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default btn-success dropdown-toggle"
+                                data-toggle="dropdown">
+                            <i class="glyphicon glyphicon-user"></i><span id="b">欢迎登录</span><span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#"><i class="glyphicon glyphicon-cog"></i> 个人设置</a></li>
+                            <li><a href="#"><i class="glyphicon glyphicon-comment"></i> 消息</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/user/loginout"><i class="glyphicon glyphicon-off"></i> 退出系统</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li style="margin-left:10px;padding-top:8px;">
+                    <button type="button" class="btn btn-default btn-danger">
+                        <span class="glyphicon glyphicon-question-sign"></span> 帮助
+                    </button>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <div class="tree">
+                <ul style="padding-left:0px;" class="list-group">
+                    <li class="list-group-item tree-closed">
+                        <a href="#"><i class="glyphicon glyphicon-dashboard"></i> 控制面板</a>
+                    </li>
+                    <li class="list-group-item">
+                        <span><i class="glyphicon glyphicon glyphicon-tasks"></i> 用户管理 </span>
+                        <ul style="margin-top:10px;display:none;">
+                            <li style="height:30px;">
+                                <a href="/user/loadAllUser"><i class="glyphicon glyphicon-user"></i> 用户维护</a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li class="list-group-item tree-closed">
+                        <span><i class="glyphicon glyphicon glyphicon-tasks"></i> 商品管理 </span>
+                        <ul style="margin-top:10px;">
+                            <li style="height:30px;">
+                                <a href="/product/findAll" ><i class="glyphicon glyphicon-check"></i> 商品维护</a>
+                            </li>
+                            <li style="height:30px;">
+                                <a href="/picture/loadAll" style="color:red;"><i class="glyphicon glyphicon-check"></i> 商品图片管理</a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="glyphicon glyphicon-th"></i> 数据列表</h3>
+                </div>
+                <div class="panel-body">
+
+                    <button type="button" onclick="deleteBatch()" class="btn btn-danger"
+                            style="float:right;margin-left:10px;"><i
+                            class=" glyphicon glyphicon-remove"></i> 删除
+                    </button>
+                    <button type="button" class="btn btn-primary" style="float:right;"
+                            onclick="window.location.href='/pictureAddview'"><i class="glyphicon glyphicon-plus"></i> 新增
+                    </button>
+                    <br>
+                    <hr style="clear:both;">
+                    <div class="table-responsive">
+                        <table class="table  table-bordered" id="tab">
+                            <tr>
+                                <th width="30">#</th>
+                                <th width="30"><input type="checkbox" id="all" onclick="doCheck()"></th>
+                                <th>图片</th>
+                                <th>路径</th>
+
+                                <th width="150">操作</th>
+                            </tr>
+                            <tr th:each="l:${list}">
+                                <th width="30" th:text="${l.pictureId}">#</th>
+                                <th ><input type="checkbox"  name="chs" th:value="${l.pictureId}"></th>
+                                <th style="width: 100px">
+                                    <img style="width: 100%"th:src="${l.pictureUrl}">
+                                </th>
+                                <th th:text="${l.pictureUrl}">产品规格</th>
+
+                                <th>
+
+                                   <!-- <a th:href="@{loadById(pictureId=${l.pictureId})}"><button type="button" class="btn btn-primary btn-xs  glyphicon glyphicon-pencil"></button></a>-->
+                                    <a th:href="@{delete(pictureId=${l.pictureId})}"><button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"> </i></button></a>
+                                </th>
+
+                            </tr>
+
+                            <tr>
+                                <td colspan="18" align="center">
+                                    <ul class="pagination">
+                                        <li><a  href="/picture/loadAll?pages=1&rows=10">首页</a></li>
+                                        <li ><a  th:href="@{loadAll(pages=${pages-1})}">上一页</a></li>
+                                        <li><a ><span th:text="'当前第'+ ${pages} +'页'"> 当前第1页 </span></a></li>
+                                        <li><a href="#" th:href="@{loadAll(pages=${pages+1})}">下一页</a></li>
+                                        <li><a href="#" th:href="@{loadAll(pages=${maxpage})}">尾页</a></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../static/jquery/jquery-2.1.1.min.js"></script>
+<script src="../static/bootstrap/js/bootstrap.min.js"></script>
+<script src="../static/script/docs.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+
+        $(".list-group-item").click(function () {
+            if ($(this).find("ul")) {
+                $(this).toggleClass("tree-closed");
+                if ($(this).hasClass("tree-closed")) {
+                    $("ul", this).hide("fast");
+                } else {
+                    $("ul", this).show("fast");
+                }
+            }
+        });
+
+        $.ajax({
+            type : "post",
+            url : "/user/loginname",
+            datatype:"json",
+            success : function(data) {
+                $("#b").html(data);
+            }
+        });
+    });
+    function doCheck() {
+        var chs = document.getElementsByName("chs");
+        var allChs = document.getElementById("all");
+        for (var i = 0; i < chs.length; i++) {
+            chs[i].checked = allChs.checked;
+
+        }
+    }
+
+    function deleteBatch() {
+        var bool = false;
+        var chs = document.getElementsByName("chs");
+        var ids = [];
+        for (var i = 0; i < chs.length; i++) {
+            if (chs[i].checked) {
+                bool = true;
+                ids.push(chs[i].value);
+            }
+        }
+        var uidList = ids.join("-");
+        if (!bool) {
+            alert("请选择删除项");
+        }
+        if (bool) {
+            var bool1 = confirm("是否确认要删除此条数据,删除之后无法恢复!");
+            if (bool1) {
+                $.post("/picture/deleteBatch", {"uidList": uidList}, function (data) {
+                    if (data == 1) {
+                        location.href="/picture/loadAll";
+                    } else {
+                        alert("删除失败");
+                    }
+                });
+            } else {
+                location.reload();
+            }
+        }
+    }
+
+</script>
+</body>
+</html>

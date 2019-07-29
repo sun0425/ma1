@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../static/css/main.css">
+    <link rel="stylesheet" href="../static/css/doc.min.css">
+    <style>
+        .tree li {
+            list-style-type: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <div><a class="navbar-brand" style="font-size:32px;" href="">美好生活从盒马开始</a></div>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li style="padding-top:8px;">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default btn-success dropdown-toggle"
+                                data-toggle="dropdown">
+                            <i class="glyphicon glyphicon-user"></i><span id="b">欢迎登录</span><span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#"><i class="glyphicon glyphicon-cog"></i> 个人设置</a></li>
+                            <li><a href="#"><i class="glyphicon glyphicon-comment"></i> 消息</a></li>
+                            <li class="divider"></li>
+                            <li><a href="loginout"><i class="glyphicon glyphicon-off"></i> 退出系统</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li style="margin-left:10px;padding-top:8px;">
+                    <button type="button" class="btn btn-default btn-danger">
+                        <span class="glyphicon glyphicon-question-sign"></span> 帮助
+                    </button>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <div class="tree">
+                <ul style="padding-left:0px;" class="list-group">
+                    <li class="list-group-item tree-closed">
+                        <a href="#"><i class="glyphicon glyphicon-dashboard"></i> 控制面板</a>
+                    </li>
+                    <li class="list-group-item">
+                        <span><i class="glyphicon glyphicon glyphicon-tasks"></i> 用户管理 </span>
+                        <ul style="margin-top:10px;">
+                            <li style="height:30px;">
+                                <a href="/user/loadAllUser" style="color:red;"><i class="glyphicon glyphicon-user"></i>
+                                    用户维护</a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li class="list-group-item tree-closed">
+                        <span><i class="glyphicon glyphicon glyphicon-tasks"></i> 商品管理 </span>
+                        <ul style="margin-top:10px;display:none;">
+                            <li style="height:30px;">
+                                <a href="auth_certview"><i class="glyphicon glyphicon-check"></i> 商品维护</a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <ol class="breadcrumb">
+                <li><a href="#">首页</a></li>
+                <li><a href="#">数据列表</a></li>
+                <li class="active">修改</li>
+            </ol>
+            <div class="panel panel-default">
+                <div class="panel-heading">表单数据
+                    <div style="float:right;cursor:pointer;" data-toggle="modal" data-target="#myModal"><i
+                            class="glyphicon glyphicon-question-sign"></i></div>
+                </div>
+                <div class="panel-body">
+                    <form  method="post" enctype="multipart/form-data" id="fr">
+                        <div class="form-group">
+                            <label for="userId">账号id</label>
+                            <input type="text" class="form-control" readonly="readonly" name="userId" id="userId"
+                                   th:value="${user.userId}">
+                        </div>
+                        <div class="form-group">
+                            <label for="userId">更换头像</label>
+
+                        </div>
+                        <div class="form-group" style="margin-top:-14px">
+                            <img style="width:80px;" th:src="${user.userPicture}"> <span ><input style="margin-top:8px" type="file" id="uploadFile" name="uploadFile"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="userName">登陆账号</label>
+                            <input type="text" class="form-control" id="userName" name="userName"
+                                   th:value="${user.userName}">
+                        </div>
+                        <div class="form-group">
+                            <label for="userPassword">密码</label>
+                            <input type="password" class="form-control" name="userPassword" id="userPassword"
+                                   th:value="${user.userPassword}">
+                        </div>
+                        <div class="form-group">
+                            <label for="userSex">性别</label>
+                            <input type="text" class="form-control" name="userSex" id="userSex"
+                                   th:value="${user.userSex}">
+                        </div>
+                        <div class="form-group">
+                            <label for="userMoney">余额</label>
+                            <input type="text" class="form-control" name="userMoney" id="userMoney"
+                                   th:value="${user.userMoney}">
+                        </div>
+                        <div class="form-group">
+                            <label for="userEmail">邮箱地址</label>
+                            <input type="email" class="form-control" id="userEmail" name="userEmail"
+                                   th:value="${user.userEmail}">
+                            <p class="help-block label label-warning">请输入合法的邮箱地址, 格式为： xxxx@xxxx.com</p>
+                        </div>
+                        <button type="button" id="submit" class="btn btn-success"><i class="glyphicon glyphicon-edit"></i> 修改
+                        </button>
+                        <button type="reset" class="btn btn-danger"><i class="glyphicon glyphicon-refresh"></i> 重置
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">帮助</h4>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../static/jquery/jquery-2.1.1.min.js"></script>
+<script src="../static/bootstrap/js/bootstrap.min.js"></script>
+<script src="../static/script/docs.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $(".list-group-item").click(function () {
+            if ($(this).find("ul")) {
+                $(this).toggleClass("tree-closed");
+                if ($(this).hasClass("tree-closed")) {
+                    $("ul", this).hide("fast");
+                } else {
+                    $("ul", this).show("fast");
+                }
+            }
+        });
+        $.ajax({
+            type: "post",
+            url: "/user/loginname",
+            datatype: "json",
+            success: function (data) {
+
+                $("#b").html(data);
+            }
+        });
+
+        // 上传文件
+        $("#submit").click(function () {
+            var formData = new FormData(document.getElementById("fr"));
+            $.ajax({
+                type: "post",
+                url: "/user/updateImg",
+                data: formData,
+                processData: false, //processData设置为false。因为data值是FormData对象，不需要对数据做处理。
+                contentType: false, // contentType设置为false。因为是由<form>表单构造的FormData对象，且已经声明了属性enctype="multipart/form-data"，所以这里设置为false。
+                cache: false,  //cache设置为false，上传文件不需要缓存。
+                success: function (data) {
+                    if (parseInt(data) == 1) {
+                        location.href = "/user/loadAllUser";
+                    } else {
+                        location.href = "/errorview";
+                    }
+                }
+            });
+        });
+
+    });
+</script>
+</body>
+</html>

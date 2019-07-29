@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.dao.UserDao">
+   <resultMap id="user" type="com.qf.domain.AgricultureUser">
+        <id column="user_id" property="userId"></id>
+        <result column="user_name" property="userName"></result>
+        <result column="user_sex" property="userSex"></result>
+        <result column="user_password" property="userPassword"></result>
+        <result column="user_email" property="userEmail"></result>
+        <result column="user_money" property="userMoney"></result>
+        <result column="user_picture" property="userPicture"></result>
+        <result column="user_paypassword" property="userPayPassword"></result>
+
+    </resultMap>
+
+    <!--登录-->
+    <select id="loginByUserNameAndPassword" parameterType="com.qf.domain.Admin" resultType="com.qf.domain.Admin">
+        select * from admin where userName=#{userName} and password=#{password}
+    </select>
+
+    <!--查询所有用户信息-->
+    <select id="loadAllUser" resultMap="user">
+        SELECT  * FROM  agriculture_user
+    </select>
+    <!--查询总行数-->
+    <select id="countRows" resultType="int">
+        select count(user_id) from agriculture_user
+    </select>
+
+         <!--修改之前先查询-->
+       <select id="loadUserById" parameterType="int" resultMap="user">
+           SELECT * FROM agriculture_user where user_id=#{userId}
+       </select>
+
+       <update id="updateUser" parameterType="com.qf.domain.AgricultureUser">
+
+               update  agriculture_user
+               <set>
+                   <trim suffixOverrides=",">
+                       <if test="userName!=null">
+                           user_name=#{userName},
+                       </if>
+                       <if test="userPassword!=null">
+                           user_password=#{userPassword},
+                       </if>
+                       <if test="userEmail!=null">
+                           user_email=#{userEmail},
+                       </if>
+                       <if test="userSex!=null">
+                           user_sex=#{userSex},
+                       </if>
+                       <if test="userMoney!=null">
+                           user_money=#{userMoney},
+                       </if>
+                       <if test="userPayPassword!=null">
+                           user_paypassword=#{userPayPassword},
+                       </if>
+                       <if test="userPicture!=null">
+                           user_picture=#{userPicture},
+                       </if>
+
+                   </trim>
+               </set>
+               <where>
+                   user_id=#{userId}
+               </where>
+       </update>
+     <delete id="deleteUser" parameterType="int">
+           DELETE FROM agriculture_user where user_id=#{userId}
+       </delete>
+
+        <insert id="addUser" parameterType="com.qf.domain.AgricultureUser">
+            insert into agriculture_user values(null,#{userName},#{userSex},#{userPassword},#{userEmail},#{userMoney},#{userPicture},#{userPayPassword})
+        </insert>
+
+        <delete id="deleteBatch" parameterType="list">
+            delete from agriculture_user
+            <where>
+                user_id IN
+                <foreach collection="list" item="id" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </where>
+        </delete>
+    <!--   <delete id="deleteUserRole" parameterType="map">
+          delete from tb_user_role where rid=#{rid} and uid=#{uid}
+      </delete>
+      <select id="userAllRole" parameterType="int" resultType="role">
+        SELECT * FROM tb_role WHERE rid IN( SELECT rid FROM tb_user_role WHERE uid=(SELECT uid FROM USER WHERE uid=#{uid}))
+      </select>
+      <select id="userNotRole" parameterType="int" resultType="role">
+         SELECT * FROM tb_role WHERE rid not IN( SELECT rid FROM tb_user_role WHERE uid=(SELECT uid FROM USER WHERE uid=#{uid}))
+      </select>
+      <insert id="userAddRole" parameterType="map">
+         insert into tb_user_role VALUES(#{rid},#{uid})
+      </insert>-->
+
+</mapper>

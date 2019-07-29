@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.dao.SubclassProductDao">
+
+        <delete id="deletesp" parameterType="int">
+            DELETE FROM shop_product WHERE proid=#{id}
+        </delete>
+        <delete id="deleteop" parameterType="int">
+            DELETE FROM order_product WHERE pid=#{id}
+        </delete>
+       <!-- <delete id="delete" parameterType="int">
+            DELETE FROM agriculture_product WHERE product_id=#{id}
+        </delete>-->
+        <delete id="deletepp" parameterType="int">
+            DELETE FROM product_picture WHERE proid=#{id}
+        </delete>
+        <delete id="deletesup" parameterType="int">
+            DELETE FROM subclass_product WHERE proid=#{id}
+        </delete>
+        <delete id="deletesop" parameterType="int">
+            DELETE FROM sort_product WHERE p_id=#{id}
+        </delete>
+
+</mapper>

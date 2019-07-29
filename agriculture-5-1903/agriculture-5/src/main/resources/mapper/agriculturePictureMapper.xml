@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.dao.AgriculturePictureDao">
+    <resultMap id="pic" type="com.qf.domain.AgriculturePicture">
+        <id property="pictureId" column="picture_id"></id>
+        <result property="pictureUrl" column="picture_url"></result>
+    </resultMap>
+
+    <update id="update" parameterType="com.qf.domain.AgriculturePicture">
+      update agriculture_picture set picture_url=#{pictureUrl} where picture_id=#{pictureId}
+    </update>
+    <insert id="add" parameterType="com.qf.domain.AgriculturePicture">
+      insert into agriculture_picture VALUES (#{pictureId},#{pictureUrl})
+    </insert>
+    <insert id="addpp" parameterType="map">
+      insert into product_picture VALUES (#{proid},#{picid})
+    </insert>
+
+    <!--查询所有信息-->
+    <select id="loadAll" resultMap="pic">
+        SELECT  * FROM  agriculture_picture
+    </select>
+    <!--查询总行数-->
+    <select id="countRows" resultType="int">
+        select count(picture_id) from agriculture_picture
+    </select>
+    <!--删除-->
+    <delete id="deletepp" parameterType="int">
+       DELETE FROM product_picture WHERE picid=#{pictureId}
+    </delete>
+    <delete id="deleteap" parameterType="int">
+       DELETE FROM agriculture_picture WHERE picture_id=#{pictureId}
+    </delete>
+   <!--删除多个-->
+    <delete id="deleteBatch" parameterType="list">
+        delete from agriculture_picture
+        <where>
+            picture_id IN
+            <foreach collection="list" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </where>
+    </delete>
+
+</mapper>
